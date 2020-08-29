@@ -145,6 +145,7 @@ class UploadAdapter {
 
 		xhr.open( 'POST', this.url, true );
 		xhr.responseType = 'json';
+		xhr.send();
 	}
 
 	/**
