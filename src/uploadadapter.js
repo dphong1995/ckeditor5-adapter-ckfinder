@@ -46,13 +46,14 @@ export default class CKFinderUploadAdapter extends Plugin {
 	 */
 	init() {
 		const url = this.editor.config.get( 'ckfinder.uploadUrl' );
+	  	const blobUrl = this.editor.config.get( 'ckfinder.blobUrl' );
 
 		if ( !url ) {
 			return;
 		}
 
 		// Register CKFinderAdapter
-		this.editor.plugins.get( FileRepository ).createUploadAdapter = loader => new UploadAdapter( loader, url, this.editor.t );
+		this.editor.plugins.get( FileRepository ).createUploadAdapter = loader => new UploadAdapter( loader, url, this.editor.t, blobUrl );
 	}
 }
 
@@ -70,7 +71,7 @@ class UploadAdapter {
 	 * @param {String} url
 	 * @param {module:utils/locale~Locale#t} t
 	 */
-	constructor( loader, url, t ) {
+	constructor( loader, url, t, blobUrl ) {
 		/**
 		 * FileLoader instance to use during the upload.
 		 *
@@ -91,6 +92,8 @@ class UploadAdapter {
 		 * @member {module:utils/locale~Locale#t} #t
 		 */
 		this.t = t;
+
+		this.blobUrl = blobUrl;
 	}
 
 	/**
@@ -108,7 +111,7 @@ class UploadAdapter {
 						reject( error );
 					} else {
 					  	const xhr = new XMLHttpRequest();
-					  	xhr.open( 'GET', `/blobs/${blob.id}`, true );
+					  	xhr.open( 'GET', `${this.blobUrl}/${blob.id}`, true );
 					  	xhr.addEventListener( 'load', () => {
 						  	const response = xhr.response;
 							resolve( {
