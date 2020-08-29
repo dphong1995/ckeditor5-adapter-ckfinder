@@ -107,7 +107,14 @@ class UploadAdapter {
 					if ( error ) {
 						reject( error );
 					} else {
-						resolve( blob );
+					  	const xhr = new XMLHttpRequest();
+					  	xhr.open( 'GET', `/blobs/${blob.id}`, true );
+					  	xhr.addEventListener( 'load', () => {
+						  	const response = xhr.response;
+							resolve( {
+							  	default: response.url
+							} );
+						});
 					}
 				} );
 				// this._initRequest();
