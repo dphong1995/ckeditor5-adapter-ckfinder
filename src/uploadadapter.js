@@ -112,8 +112,8 @@ class UploadAdapter {
 					} else {
 					  	const xhr = new XMLHttpRequest();
 					  	xhr.open( 'GET', `${this.blobUrl}/${blob.id}`, true );
+					  	xhr.responseType = 'json';
 					  	xhr.addEventListener( 'load', () => {
-					  	  	console.log(xhr.response);
 						  	const response = xhr.response;
 							resolve( {
 							  	default: response.url
