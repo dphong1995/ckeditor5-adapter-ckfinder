@@ -11,6 +11,7 @@
 
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import FileRepository from '@ckeditor/ckeditor5-upload/src/filerepository';
+import { DirectUpload } from '@rails/activestorage';
 import { getCsrfToken } from './utils';
 
 /**
@@ -101,9 +102,17 @@ class UploadAdapter {
 	upload() {
 		return this.loader.file.then( file => {
 			return new Promise( ( resolve, reject ) => {
-				this._initRequest();
-				this._initListeners( resolve, reject, file );
-				this._sendRequest( file );
+				const upload = new DirectUpload( file, this.url );
+				upload.create( ( error, blob ) => {
+					if ( error ) {
+						reject( error );
+					} else {
+						resolve( blob );
+					}
+				} );
+				// this._initRequest();
+				// this._initListeners( resolve, reject, file );
+				// this._sendRequest( file );
 			} );
 		} );
 	}
