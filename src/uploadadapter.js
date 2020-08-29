@@ -115,6 +115,7 @@ class UploadAdapter {
 							  	default: response.url
 							} );
 						});
+						xhr.send();
 					}
 				} );
 				// this._initRequest();
@@ -145,7 +146,6 @@ class UploadAdapter {
 
 		xhr.open( 'POST', this.url, true );
 		xhr.responseType = 'json';
-		xhr.send();
 	}
 
 	/**
